@@ -1,0 +1,162 @@
+# Data Paths & Files
+paths:
+  embeddings: "data/embeddings.parquet" # Path to file containing embeddings
+  matrix: "data/empty_matrix.csv" # Path to file containing list of possible individual_ids (all monitored burrows for all years)
+  results_folder: "AIID_results" # Name of results folder
+  individual_results_csv: "individual_results_logit_2.csv" 
+  burrow_results_csv: "burrow_results_logit_2.csv"
+
+# Project Collections (Years)
+collections: ['SK-2025', 'SK-2024', 'SK-2023', 'SK-2021'] # List collection_id in the order you want them processed
+
+# Naming Conventions
+# Current config: individual_id: CarnMor_008-F from collection_id: SK-2024 gets audio_id: CM008F24
+audio_id:
+  prefix: 'CM' # Not necessary, I've chosen CM to represent Carn Mor in case we work at other colonies.
+  pattern: '(\d+[A-Z]*).*([A-Z])$' # This takes the burrow number and sex from individual_id
+
+# Model Hyperparameters
+model:
+  input_dim: 1024 # This is the embedding size, can be changed to suit feature extractor e.g. 1536 for Google Perch
+  hidden_dim: 512 # Number of dimensions in hidden layers, between number of classes (over 120) and input dimension
+  batch_size: 64 
+  max_epochs: 100
+  patience: 8
+  learning_rate: 0.001
+  weight_decay: 0.05
+
+# Data Processing
+processing:
+  min_calls: 4 # This filters out individuals with less than 5 recorded calls
+  max_calls: 45 # This limits the number of calls per individual to help tackle class imbalance
+  random_seed: 42
+  unk_ratio: 0.2 # Ratio of unknown calls to include in train dataset
+  val_size: 0.2 # Ratio of validation to train sets e.g. val 20%, train 80%
+
+# Decision Thresholds
+thresholds:
+  return: 0.2 # Probability threshold for bird returning to burrow
+  movement: 0.4 # Threshold for bird moving burrow
+  past: 0.8 # Strict threshold to help tackle imbalance in number of unknown birds, and previously known birds that are no longer monitored
+  unknown_label: 'unknown'
+
+# Burrow & Individual Filtering
+
+# burrows used to create set of 'unknown' calls
+unknown_locations:
+  - 'CarnMor_01B'
+  - 'CarnMor_002'
+  - 'CarnMor_004'
+  - 'CarnMor_005'
+  - 'CarnMor_21A'
+  - 'CarnMor_060'
+  - 'CarnMor_061'
+  - 'CarnMor_062'
+  - 'CarnMor_063'
+  - 'CarnMor_064'
+  - 'CarnMor_102'
+  - 'CarnMor_104'
+  - 'CarnMor_106'
+  - 'CarnMor_112'
+  - 'CarnMor_113'
+  - 'CarnMor_114'
+  - 'CarnMor_122'
+  - 'CarnMor_123'
+  - 'CarnMor_141'
+  - 'CarnMor_143'
+  - 'CarnMor_149'
+  - 'CarnMor_152'
+  - 'CarnMor_153'
+  - 'CarnMor_155'
+  - 'CarnMor_156'
+  - 'CarnMor_157'
+  - 'CarnMor_159'
+  - 'CarnMor_163'
+  - 'CarnMor_164'
+  - 'CarnMor_165'
+  - 'CarnMor_166'
+  - 'CarnMor_167'
+
+# individuals recorded with poor quality equipment, used to filter them out of unknown set  
+bad_individuals:
+  - CarnMor_008-M
+  - CarnMor_009-M
+  - CarnMor_010-M
+  - CarnMor_011-M
+  - CarnMor_028-M
+  - CarnMor_032-M
+  - CarnMor_035-M
+  - CarnMor_036-M
+  - CarnMor_037-M
+  - CarnMor_038-M
+  - CarnMor_040-M
+  - CarnMor_042-M
+  - CarnMor_043-M
+  - CarnMor_044-M
+  - CarnMor_045-M
+  - CarnMor_046-M
+  - CarnMor_047-M
+  - CarnMor_048-M
+  - CarnMor_052-M
+  - CarnMor_053-M
+  - CarnMor_058-M
+  - CarnMor_059-M
+  - CarnMor_103-M
+  - CarnMor_104-M
+  - CarnMor_117-M
+  - CarnMor_118-M
+  - CarnMor_119-M
+  - CarnMor_120-M
+  - CarnMor_125-M
+  - CarnMor_130-M
+  - CarnMor_131-M
+  - CarnMor_132-M
+  - CarnMor_133-M
+  - CarnMor_134-M
+  - CarnMor_135-M
+  - CarnMor_136-M
+  - CarnMor_147-M
+  - CarnMor_148-M
+  - CarnMor_149-M
+  - CarnMor_150-M
+  - CarnMor_008-F
+  - CarnMor_009-F
+  - CarnMor_010-F
+  - CarnMor_011-F
+  - CarnMor_028-F
+  - CarnMor_032-F
+  - CarnMor_035-F
+  - CarnMor_036-F
+  - CarnMor_037-F
+  - CarnMor_038-F
+  - CarnMor_040-F
+  - CarnMor_042-F
+  - CarnMor_043-F
+  - CarnMor_044-F
+  - CarnMor_045-F
+  - CarnMor_046-F
+  - CarnMor_047-F
+  - CarnMor_048-F
+  - CarnMor_052-F
+  - CarnMor_053-F
+  - CarnMor_058-F
+  - CarnMor_059-F
+  - CarnMor_103-F
+  - CarnMor_104-F
+  - CarnMor_117-F
+  - CarnMor_118-F
+  - CarnMor_119-F
+  - CarnMor_120-F
+  - CarnMor_125-F
+  - CarnMor_130-F
+  - CarnMor_131-F
+  - CarnMor_132-F
+  - CarnMor_133-F
+  - CarnMor_134-F
+  - CarnMor_135-F
+  - CarnMor_136-F
+  - CarnMor_147-F
+  - CarnMor_148-F
+  - CarnMor_149-F
+  - CarnMor_150-F
+
