@@ -2,4 +2,4 @@ from .data_pipeline import *
 from .model import *
 from .train import *
 from .predict import *
-from .analyze import *
+from .analyse import *
