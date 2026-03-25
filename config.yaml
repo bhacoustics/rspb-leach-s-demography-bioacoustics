@@ -3,8 +3,8 @@ paths:
   embeddings: "data/embeddings.parquet" # Path to file containing embeddings
   matrix: "data/empty_matrix.csv" # Path to file containing list of possible individual_ids (all monitored burrows for all years)
   results_folder: "AIID_results" # Name of results folder
-  individual_results_csv: "individual_results_logit_2.csv" 
-  burrow_results_csv: "burrow_results_logit_2.csv"
+  individual_results_csv: "individual_results_logit.csv" 
+  burrow_results_csv: "burrow_results_logit.csv"
 
 # Project Collections (Years)
 collections: ['SK-2025', 'SK-2024', 'SK-2023', 'SK-2021'] # List collection_id in the order you want them processed
